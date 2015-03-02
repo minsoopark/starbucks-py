@@ -8,6 +8,17 @@ This API is written in Python.
 
 *Only supports for Starbucks Korea.*
 
+
+Installation
+------------
+
+You can install Starbucks with ``pip``
+
+::
+
+    $ pip install starbucks
+
+
 Features
 --------
 
