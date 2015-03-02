@@ -13,11 +13,19 @@ class Starbucks(object):
         url = 'https://www.istarbucks.co.kr/Mem/login_proc.asp'
         data = {
             'userID': id,
-            'userPW', password
+            'userPW': password
         }
         r = self.session.post(url, data=data)
 
         if 'META HTTP-EQUIV' in r.text:
+            return True
+        return False
+
+    def logout(self):
+        url = 'https://www.istarbucks.co.kr/Mem/login_out.asp'
+        r = self.session.get(url)
+
+        if 'http://www.istarbucks.co.kr/Menu/product_list.asp' in r.text:
             return True
         return False
 
@@ -26,15 +34,16 @@ class Starbucks(object):
         r = self.session.get(url)
 
         if 'orgNickName' in r.text:
-            return parse_card_info(r.text)
+            return self.parse_card_info(r.text)
         return 'Need to login!'
 
-    def parse_card_info(txt_card_info):
+    def parse_card_info(self, txt_card_info):
         card = Card()
         card.username = re.findall(r'<input type="hidden" id="userId"        name="userId"        value="(.+?)"                          />', txt_card_info)[0]
         card.nickname = re.findall(r'<input type="hidden" id="orgNickName"   name="orgNickName"   value="(.+?)" />', txt_card_info)[0]
         card.number = re.findall(r'<span class="cardNo" id="cardNo">(.+?)</span>', txt_card_info)[0]
         card.balance = re.findall(r'<input type="hidden" id="balance"       name="balance"       value="(.+?)"                          />', txt_card_info)[0]
+        return card
 
 
 class Card(object):
@@ -42,12 +51,12 @@ class Card(object):
     username = None
     nickname = None
     number = None
-    balance = 0
+    balance = None
     
     def __repr__(self):
-        return '[%s - %s] 카드번호 : %s, 잔액 : %d' % (
+        return '[%s - %s] Card Number : %s, Balance : %s' % (
             self.username.encode('utf-8'),
             self.nickname.encode('utf-8'),
             self.number.encode('utf-8'),
-            self.balance,
+            self.balance.encode('utf-8'),
         )

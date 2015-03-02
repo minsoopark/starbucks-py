@@ -12,7 +12,4 @@ setup(
     url='https://github.com/minsoopark/starbucks-py',
     keywords=['Starbucks'],
     classifiers=[],
-    install_requires=[
-        'requests', 're'
-    ]
 )
