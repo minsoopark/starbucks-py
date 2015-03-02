@@ -1,8 +1,8 @@
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 setup(
     name='Starbucks',
-    packages=['starbucks'],
+    packages=find_packages(),
     version='0.0.1',
     description='Unoffical Starbucks API.',
     long_description=open('README.rst').read(),
