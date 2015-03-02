@@ -16,14 +16,14 @@ class Starbucks(object):
             'userPW': password
         }
         r = self.session.post(url, data=data)
-        return 'META HTTP-EQUIV' in r.text
+        return 'META HTTP-EQUIV' in r.text and not 'alert("' in r.text
 
     def logout(self):
         url = 'https://www.istarbucks.co.kr/Mem/login_out.asp'
         r = self.session.get(url)
 
         logout_confirm = 'http://www.istarbucks.co.kr/Menu/product_list.asp'
-        return logout_confirm in r.text:
+        return logout_confirm in r.text
 
     def get_card_info(self, card_reg_number):
         url = 'http://msr.istarbucks.co.kr/mycard/cardInfo.do?card_reg_number=%s' % card_reg_number
