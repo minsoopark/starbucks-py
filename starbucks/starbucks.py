@@ -1,5 +1,7 @@
-import requests
 import re
+
+import requests
+
 
 class Starbucks(object):
 
