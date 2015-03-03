@@ -1,4 +1,4 @@
-import re
+from lxml import html
 
 import requests
 
@@ -43,10 +43,22 @@ class Starbucks(object):
 
     def parse_card_info(self, txt_card_info):
         card = Card()
-        card.username = re.findall(r'<input type="hidden" id="userId"        name="userId"        value="(.+?)"                          />', txt_card_info)[0].strip()
-        card.nickname = re.findall(r'<input type="hidden" id="orgNickName"   name="orgNickName"   value="(.+?)" />', txt_card_info)[0].strip()
-        card.number = re.findall(r'<span class="cardNo" id="cardNo">(.+?)</span>', txt_card_info)[0].strip()
-        card.balance = re.findall(r'<input type="hidden" id="balance"       name="balance"       value="(.+?)"                          />', txt_card_info)[0].strip()
+        
+        raw = html.fromstring(txt_card_info)
+
+        for child in raw.getchildren()[0].getchildren():
+            if child.get('name') == 'orgNickName':
+                card.nickname = child.get('value')
+            elif child.get('name') == 'balance':
+                card.balance = child.get('value')
+            elif child.get('name') == 'userName':
+                card.username = child.get('value')
+
+            if len(child.getchildren()) > 0:
+                for more in child.getchildren():
+                    if more.get('name') == 'card_number':
+                        card.number = more.get('value')
+        
         return card
     
     def get_stars_count(self):
@@ -54,11 +66,16 @@ class Starbucks(object):
         r = self.session.get(url)
         
         if 'myRewardsHistory' in r.text:
-            results = list(re.findall(r'<p class="h1_txt"><strong>(.+?)</strong>(.+?)</p>', r.text)[0])
-            return '%s %s' % (
-                results[0].encode('utf-8'),
-                results[1].encode('utf-8')
-            )
+            return self.parse_stars_count(r.text)
+        return 'Can\'t get the count of stars.'
+    
+    def parse_stars_count(self, txt_stars_info):
+        raw = html.fromstring(txt_stars_info)
+
+        for child in raw.getchildren()[1].getchildren()[2].getchildren():
+            for more in child.getchildren():
+                if more.get('class') == 'h1_txt':
+                    return more.text_content()
         return 'Can\'t get the count of stars.'
 
 
