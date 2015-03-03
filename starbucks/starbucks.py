@@ -21,7 +21,7 @@ class Starbucks(object):
         
         success = 'META HTTP-EQUIV' in r.text and not 'alert("' in r.text
         if success:
-            url = 'http://msr.istarbucks.co.kr/star/index.asp'
+            url = 'http://www.istarbucks.co.kr/index.asp'
             r = self.session.get(url)
             return 'STARBUCKS' in r.text
         return False
