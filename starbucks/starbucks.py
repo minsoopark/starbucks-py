@@ -23,7 +23,7 @@ class Starbucks(object):
         if success:
             url = 'http://msr.istarbucks.co.kr/star/index.asp'
             r = self.session.get(url)
-            return 'Starbucks Coffee Korea' in r.text
+            return 'STARBUCKS' in r.text
         return False
 
     def logout(self):
