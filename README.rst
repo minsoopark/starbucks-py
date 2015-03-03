@@ -85,4 +85,5 @@ To Do
 
 - Cards list
 - Card usage histories
+- More error checks
 - and so on.
