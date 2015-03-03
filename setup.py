@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='Starbucks',
     packages=find_packages(),
-    version='0.2.1',
+    version='0.2.2',
     description='Unoffical Starbucks API.',
     long_description=open('README.rst').read(),
     license='BSD License',
@@ -17,5 +17,6 @@ setup(
      entry_points='''
         [console_scripts]
         starbucks-card = starbucks.cli:card_info
+        starbucks-star = starbucks.cli:star_info
     '''
 )
