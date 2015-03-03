@@ -1,5 +1,7 @@
 from lxml import html
 
+import re
+
 import requests
 
 
@@ -75,7 +77,9 @@ class Starbucks(object):
         for child in raw.getchildren()[1].getchildren()[2].getchildren():
             for more in child.getchildren():
                 if more.get('class') == 'h1_txt':
-                    return more.text_content()
+                    content = more.text_content()
+                    content = content.replace(',', '')
+                    return re.findall(r'\b\d+\b', content)[0]
         return 'Can\'t get the count of stars.'
 
 

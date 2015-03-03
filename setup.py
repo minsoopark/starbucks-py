@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='Starbucks',
     packages=find_packages(),
-    version='0.2.0',
+    version='0.2.1',
     description='Unoffical Starbucks API.',
     long_description=open('README.rst').read(),
     license='BSD License',
