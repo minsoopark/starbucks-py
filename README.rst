@@ -2,6 +2,9 @@
 Starbucks-py
 ============
 
+.. image:: https://pypip.in/v/Starbucks/badge.svg
+    :target: https://pypi.python.org/pypi/Starbucks/
+
 Unofficial Starbucks API.
 
 This API is written in Python.
@@ -49,7 +52,18 @@ You can get your card information like:
     
 
 
-3. Logout
+3. Get My Stars Count
+~~~~~~~~~~~~~~~~~~~~~
+
+You can get your stars count like:
+
+::
+
+    starbucks.get_stars_count()
+    
+
+
+4. Logout
 ~~~~~~~~~
 
 If you want to logout, just:

@@ -33,15 +33,27 @@ class Starbucks(object):
 
         if 'orgNickName' in r.text:
             return self.parse_card_info(r.text)
-        return 'Need to login!'
+        return 'Can\'t get the card information.'
 
     def parse_card_info(self, txt_card_info):
         card = Card()
-        card.username = re.findall(r'<input type="hidden" id="userId"        name="userId"        value="(.+?)"                          />', txt_card_info)[0]
-        card.nickname = re.findall(r'<input type="hidden" id="orgNickName"   name="orgNickName"   value="(.+?)" />', txt_card_info)[0]
-        card.number = re.findall(r'<span class="cardNo" id="cardNo">(.+?)</span>', txt_card_info)[0]
-        card.balance = re.findall(r'<input type="hidden" id="balance"       name="balance"       value="(.+?)"                          />', txt_card_info)[0]
+        card.username = re.findall(r'<input type="hidden" id="userId"        name="userId"        value="(.+?)"                          />', txt_card_info)[0].strip()
+        card.nickname = re.findall(r'<input type="hidden" id="orgNickName"   name="orgNickName"   value="(.+?)" />', txt_card_info)[0].strip()
+        card.number = re.findall(r'<span class="cardNo" id="cardNo">(.+?)</span>', txt_card_info)[0].strip()
+        card.balance = re.findall(r'<input type="hidden" id="balance"       name="balance"       value="(.+?)"                          />', txt_card_info)[0].strip()
         return card
+    
+    def get_stars_count(self):
+        url = 'http://msr.istarbucks.co.kr/star/index.do'
+        r = self.session.get(url)
+        
+        if 'myRewardsHistory' in r.text:
+            results = list(re.findall(r'<p class="h1_txt"><strong>(.+?)</strong>(.+?)</p>', r.text)[0])
+            return '%s %s' % (
+                results[0].encode('utf-8'),
+                results[1].encode('utf-8')
+            )
+        return 'Can\'t get the count of stars.'
 
 
 class Card(object):
