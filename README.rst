@@ -50,6 +50,12 @@ You can get your card information like:
     # It is in the source code of Starbucks web page.
     card = starbucks.get_card_info('0000000')
     
+or using CLI:
+
+::
+
+    $ starbucks-card --id {username} --password {password} --reg-number {card reg number}
+
 
 
 3. Get My Stars Count
@@ -60,6 +66,12 @@ You can get your stars count like:
 ::
 
     starbucks.get_stars_count()
+    
+or using CLI:
+
+::
+
+    $ starbucks-star --id {username} --password {password}
     
 
 
