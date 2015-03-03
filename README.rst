@@ -77,7 +77,6 @@ If you want to logout, just:
 Known Issues
 ------------
 
-- After the first login, I can't get the card information. But after logout, and login again, then finally I can get the card information.
 - Should I have to check if I logged in successfully like this?
 
 
