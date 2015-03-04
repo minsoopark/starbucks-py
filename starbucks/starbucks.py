@@ -47,19 +47,11 @@ class Starbucks(object):
         card = Card()
         
         raw = html.fromstring(txt_card_info)
-
-        for child in raw.getchildren()[0].getchildren():
-            if child.get('name') == 'orgNickName':
-                card.nickname = child.get('value')
-            elif child.get('name') == 'balance':
-                card.balance = child.get('value')
-            elif child.get('name') == 'userName':
-                card.username = child.get('value')
-
-            if len(child.getchildren()) > 0:
-                for more in child.getchildren():
-                    if more.get('name') == 'card_number':
-                        card.number = more.get('value')
+        
+        card.nickname = raw.xpath('//*[@name="orgNickName"]')[0].get('value')
+        card.balance = raw.xpath('//*[@name="balance"]')[0].get('value')
+        card.username = raw.xpath('//*[@name="userName"]')[0].get('value')
+        card.number = raw.xpath('//*[@name="card_number"]')[0].get('value')
         
         return card
     
@@ -73,14 +65,11 @@ class Starbucks(object):
     
     def parse_stars_count(self, txt_stars_info):
         raw = html.fromstring(txt_stars_info)
-
-        for child in raw.getchildren()[1].getchildren()[2].getchildren():
-            for more in child.getchildren():
-                if more.get('class') == 'h1_txt':
-                    content = more.text_content()
-                    content = content.replace(',', '')
-                    return re.findall(r'\b\d+\b', content)[0]
-        return 'Can\'t get the count of stars.'
+        
+        content = raw.xpath('//*[@class="h1_txt"]')[0].text_content()
+        content = content.replace(',', '')
+        
+        return re.findall(r'\b\d+\b', content)[0]
 
 
 class Card(object):
