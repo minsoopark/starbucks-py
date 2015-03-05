@@ -70,6 +70,31 @@ class Starbucks(object):
         content = content.replace(',', '')
         
         return re.findall(r'\b\d+\b', content)[0]
+    
+    def get_beverages(self):
+        prods = ['P020100', 'P020200', 'P020300', 'P020400', 'P020500']
+        result = ''
+        
+        url = 'http://www.istarbucks.co.kr/Menu/product_list_ajax.asp'
+        for prod in prods:
+            data = {
+                'Prod': prod
+            }
+            r = self.session.post(url, data=data)
+            result += r.text
+        
+        raw = html.fromstring(result)
+
+        beverages = []
+        el_menus = raw.xpath('//li')
+
+        for el_menu in el_menus:
+            beverage = Beverage()
+            beverage.name = el_menu.xpath('.//strong')[0].text_content()
+            beverage.img_url = el_menu.xpath('.//img')[0].get('src')
+            beverages.append(beverage)
+            
+        return beverages
 
 
 class Card(object):
@@ -85,4 +110,16 @@ class Card(object):
             self.nickname.encode('utf-8'),
             self.number.encode('utf-8'),
             self.balance.encode('utf-8'),
+        )
+
+
+class Beverage(object):
+
+    name = None
+    img_url = None
+
+    def __repr__(self):
+        return '[%s] Image : %s' % (
+            self.name.encode('utf-8'),
+            self.img_url.encode('utf-8'),
         )

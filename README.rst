@@ -22,6 +22,7 @@ You can install Starbucks with ``pip``
     $ pip install starbucks
 
 
+
 Features
 --------
 
@@ -75,7 +76,18 @@ or using CLI:
     
 
 
-4. Logout
+4. Get Beverage Menus
+~~~~~~~~~~~~~~~~~~~~~
+
+You can get the list of beverage menus like:
+
+::
+
+    starbucks.get_beverages()
+
+
+
+5. Logout
 ~~~~~~~~~
 
 If you want to logout, just:
