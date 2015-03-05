@@ -48,6 +48,10 @@ class Starbucks(object):
         
         raw = html.fromstring(txt_card_info)
         
+        card_image = raw.xpath('//img[@id="cardImage"]')[0]
+        
+        card.cardname = card_image.get('alt')
+        card.img_url = card_image.get('src')
         card.nickname = raw.xpath('//*[@name="orgNickName"]')[0].get('value')
         card.balance = raw.xpath('//*[@name="balance"]')[0].get('value')
         card.username = raw.xpath('//*[@name="userName"]')[0].get('value')
@@ -99,17 +103,21 @@ class Starbucks(object):
 
 class Card(object):
 
+    cardname = None
     username = None
     nickname = None
     number = None
     balance = None
+    img_url = None
 
     def __repr__(self):
-        return '[%s - %s] Card Number : %s, Balance : %s' % (
+        return '%s [%s - %s] Card Number : %s, Balance : %s, Image : %s' % (
+            self.cardname.encode('utf-8'),
             self.username.encode('utf-8'),
             self.nickname.encode('utf-8'),
             self.number.encode('utf-8'),
             self.balance.encode('utf-8'),
+            self.img_url.encode('utf-8'),
         )
 
 
@@ -123,3 +131,4 @@ class Beverage(object):
             self.name.encode('utf-8'),
             self.img_url.encode('utf-8'),
         )
+
