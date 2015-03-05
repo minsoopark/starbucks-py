@@ -94,7 +94,7 @@ class Starbucks(object):
 
         for el_menu in el_menus:
             beverage = Beverage()
-            beverage.name = el_menu.xpath('.//strong')[0].text_content()
+            beverage.name = el_menu.xpath('.//strong[last()]')[0].text_content()
             beverage.img_url = el_menu.xpath('.//img')[0].get('src')
             beverages.append(beverage)
             
