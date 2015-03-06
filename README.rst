@@ -40,7 +40,18 @@ You can login to Starbucks like:
     
 
 
-2. Get My Card Information
+2. Get My Cards
+~~~~~~~~~~~~~~~
+
+You can get your cards like:
+
+::
+
+    cards = starbucks.get_cards()
+
+
+
+3. Get My Card Information
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can get your card information like:
@@ -59,7 +70,7 @@ or using CLI:
 
 
 
-3. Get My Stars Count
+4. Get My Stars Count
 ~~~~~~~~~~~~~~~~~~~~~
 
 You can get your stars count like:
@@ -76,7 +87,7 @@ or using CLI:
     
 
 
-4. Get Beverage Menus
+5. Get Beverage Menus
 ~~~~~~~~~~~~~~~~~~~~~
 
 You can get the list of beverage menus like:
@@ -87,7 +98,7 @@ You can get the list of beverage menus like:
 
 
 
-5. Logout
+6. Logout
 ~~~~~~~~~
 
 If you want to logout, just:
@@ -107,7 +118,6 @@ Known Issues
 To Do
 -----
 
-- Cards list
 - Card usage histories
 - More error checks
 - and so on.

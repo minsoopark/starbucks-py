@@ -59,6 +59,27 @@ class Starbucks(object):
         
         return card
     
+    def get_cards(self):
+        url = 'http://msr.istarbucks.co.kr/mycard/index.do'
+        r = self.session.get(url)
+        
+        raw = html.fromstring(r.text)
+        
+        raw_cards = raw.xpath('//ul')[0].getchildren()
+        reg_numbers = []
+
+        for card in raw_cards:
+            link = card.xpath('.//a')[0].get('href')
+            reg_number = re.findall(r'\'(.+?)\'', link)[0]
+            reg_numbers.append(str(reg_number))
+
+        cards = []
+        for reg_number in reg_numbers:
+            card = self.get_card_info(reg_number)
+            cards.append(card)
+
+        return cards
+    
     def get_stars_count(self):
         url = 'http://msr.istarbucks.co.kr/star/index.do'
         r = self.session.get(url)
