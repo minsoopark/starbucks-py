@@ -120,6 +120,28 @@ class Starbucks(object):
             beverages.append(beverage)
             
         return beverages
+    
+    def get_coupons(self):
+        url = 'http://msr.istarbucks.co.kr/coupon/valid.do'
+        r = self.session.get(url)
+
+        raw = html.fromstring(r.text)
+
+        table = raw.xpath('//table[@class="bbsList"]')[0]
+        tbody = table.xpath('.//tbody')[0]
+        trs = tbody.xpath('.//tr')
+
+        coupons = []
+        
+        for tr in trs:
+            coupon = Coupon()
+            coupon.name = tr.xpath('.//span')[0].text.strip()
+            coupon.created_at = tr.xpath('.//td[@class="dataT"]')[0].text_content().strip()
+            coupon.expired_at = re.sub(r'[\t\n]', '', tr.xpath('.//td')[3].text_content().strip())
+            coupon.img_url = tr.xpath('.//img')[0].get('src')
+            coupons.append(coupon)
+        
+        return coupons
 
 
 class Card(object):
@@ -153,3 +175,18 @@ class Beverage(object):
             self.img_url.encode('utf-8'),
         )
 
+
+class Coupon(object):
+    
+    name = None
+    created_at = None
+    expired_at = None
+    img_url = None
+    
+    def __repr__(self):
+        return '[%s] Created : %s, Expired : %s, Image : %s' % (
+            self.name.encode('utf-8'),
+            self.created_at.encode('utf-8'),
+            self.expired_at.encode('utf-8'),
+            self.img_url.encode('utf-8'),
+        )

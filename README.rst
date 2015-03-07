@@ -98,7 +98,18 @@ You can get the list of beverage menus like:
 
 
 
-6. Logout
+6. Get My Coupons
+~~~~~~~~~~~~~~~~~~~~~
+
+You can get the list of your coupons like:
+
+::
+
+    starbucks.get_coupons()
+    
+
+
+7. Logout
 ~~~~~~~~~
 
 If you want to logout, just:
