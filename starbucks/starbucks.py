@@ -95,9 +95,24 @@ class Starbucks(object):
         content = content.replace(',', '')
         
         return re.findall(r'\b\d+\b', content)[0]
+      
+    def get_beverage(self, id):
+        url = 'http://www.istarbucks.co.kr/mobile/products/beverage_view.asp?Product_cd=%s' % id
+        
+        r = self.session.get(url)
+        
+        raw = html.fromstring(r.text)
+        
+        beverage = Beverage()
+        beverage.id = id
+        beverage.name = raw.xpath('//h3[@class="prdTitle"]')[0].text
+        beverage.img_url = raw.xpath('//div[@id="thumb"]')[0].xpath('.//img')[0].get('src')
+        beverage.description = raw.xpath('//p[@class="subTitle"]')[0].text_content()
+        
+        return beverage
     
     def get_beverages(self):
-        prods = ['P020100', 'P020200', 'P020300', 'P020400', 'P020500']
+        prods = ['P020100', 'P020200', 'P020300', 'P020400', 'P020500', 'P020700', 'P020800']
         result = ''
         
         url = 'http://www.istarbucks.co.kr/Menu/product_list_ajax.asp'
@@ -115,6 +130,8 @@ class Starbucks(object):
 
         for el_menu in el_menus:
             beverage = Beverage()
+            link = el_menu.xpath('.//a')[0].get('href')
+            beverage.id = re.findall(r'\'.+?\'', link)[1]
             beverage.name = el_menu.xpath('.//strong[last()]')[0].text_content()
             beverage.img_url = el_menu.xpath('.//img')[0].get('src')
             beverages.append(beverage)
@@ -166,11 +183,14 @@ class Card(object):
 
 class Beverage(object):
 
+    id = None
     name = None
     img_url = None
+    description = None
 
     def __repr__(self):
-        return '[%s] Image : %s' % (
+        return '%s - [%s] Image : %s' % (
+            self.id.encode('utf-8'),
             self.name.encode('utf-8'),
             self.img_url.encode('utf-8'),
         )
